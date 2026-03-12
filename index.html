@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Air Quality Monitor</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f2f5f9;
+    color:#333;
+}
+
+/* HEADER */
+
+.header{
+    text-align:center;
+    padding:30px 15px;
+}
+
+.header h1{
+    margin:0;
+    font-size:32px;
+}
+
+/* DATA CARDS */
+
+.data-container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    width:150px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.card h3{
+    margin:0;
+    font-size:16px;
+    color:#777;
+}
+
+.value{
+    font-size:28px;
+    margin-top:8px;
+    font-weight:bold;
+}
+
+/* CHARTS */
+
+.charts{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap:25px;
+    padding:30px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.chart{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.08);
+}
+
+.chart h2{
+    text-align:center;
+    font-size:18px;
+}
+
+.chart iframe{
+    width:100%;
+    height:260px;
+    border:none;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+.header h1{
+    font-size:24px;
+}
+
+.card{
+    width:120px;
+}
+
+.value{
+    font-size:22px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>🌍 Air Quality Station</h1>
+</div>
+
+
+<!-- CURRENT VALUES -->
+
+<div class="data-container">
+
+<div class="card">
+<h3>Temperature</h3>
+<div class="value"><span id="temp">--</span> °C</div>
+</div>
+
+<div class="card">
+<h3>Humidity</h3>
+<div class="value"><span id="hum">--</span> %</div>
+</div>
+
+<div class="card">
+<h3>Pressure</h3>
+<div class="value"><span id="pres">--</span> hPa</div>
+</div>
+
+<div class="card">
+<h3>VOC</h3>
+<div class="value"><span id="voc">--</span></div>
+</div>
+
+</div>
+
+
+<!-- CHARTS -->
+
+<div class="charts">
+
+<div class="chart">
+<h2>Temperature</h2>
+<iframe src="https://thingspeak.com/channels/3297398/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+
+<div class="chart">
+<h2>Humidity</h2>
+<iframe src="https://thingspeak.com/channels/3297398/charts/2?bgcolor=%23ffffff&color=%23007bff&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+
+<div class="chart">
+<h2>Pressure</h2>
+<iframe src="https://thingspeak.com/channels/3297398/charts/3?bgcolor=%23ffffff&color=%2300aa55&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+
+<div class="chart">
+<h2>VOC</h2>
+<iframe src="https://thingspeak.com/channels/3297398/charts/4?bgcolor=%23ffffff&color=%23ff8800&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+
+</div>
+
+
+<script>
+
+function updateData(){
+
+fetch("https://api.thingspeak.com/channels/3297398/feeds/last.json")
+.then(response => response.json())
+.then(data => {
+
+document.getElementById("temp").innerText = data.field1
+document.getElementById("hum").innerText = data.field2
+document.getElementById("pres").innerText = data.field3
+document.getElementById("voc").innerText = data.field4
+
+})
+
+}
+
+updateData()
+
+setInterval(updateData,15000)
+
+</script>
+
+</body>
+</html>
