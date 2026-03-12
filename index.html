@@ -178,10 +178,17 @@ fetch("https://api.thingspeak.com/channels/3297398/feeds/last.json")
 .then(response => response.json())
 .then(data => {
 
-document.getElementById("temp").innerText = data.field1
-document.getElementById("hum").innerText = data.field2
-document.getElementById("pres").innerText = data.field3
-document.getElementById("voc").innerText = data.field4
+document.getElementById("temp").innerText =
+parseFloat(data.field1).toFixed(1)
+
+document.getElementById("hum").innerText =
+parseFloat(data.field2).toFixed(1)
+
+document.getElementById("pres").innerText =
+parseFloat(data.field3).toFixed(0)
+
+document.getElementById("voc").innerText =
+parseFloat(data.field4).toFixed(0)
 
 })
 
@@ -194,4 +201,5 @@ setInterval(updateData,15000)
 </script>
 
 </body>
+
 </html>
